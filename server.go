@@ -61,7 +61,7 @@ var typeOfOsError = reflect.Typeof(unusedError).(*reflect.PtrType).Elem()
 func (server *Server) register(rcvr interface{}, name string, useName bool) os.Error {
 	server.Lock()
 	defer server.Unlock()
-	
+
 	s := new(service)
 	s.typ = reflect.Typeof(rcvr)
 	s.rcvr = reflect.NewValue(rcvr)
@@ -70,7 +70,7 @@ func (server *Server) register(rcvr interface{}, name string, useName bool) os.E
 		sname = name
 	}
 	if sname == "" {
-		log.Exit("rpc: no service name for type", s.typ.String())
+		log.Fatalln("rpc: no service name for type", s.typ.String())
 	}
 	if s.typ.PkgPath() != "" && !isExported(sname) && !useName {
 		s := "rpc Register: type " + sname + " is not exported"
