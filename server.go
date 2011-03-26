@@ -219,13 +219,13 @@ func (server *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	resp.Id = req.Id
 	
 	
-	w.SetHeader("Content-Type", "application/json; charset=utf-8")
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	enc := json.NewEncoder(w)
 	enc.Encode(resp)
 }
 
 func sendError(w http.ResponseWriter, s string) {
-	w.SetHeader("Content-Type", "application/json; charset=utf-8")
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.Write([]byte("{\"jsonrpc\": \"2.0\", \"id\":null, \"error\":\"" + s + "\"}"))
 }
 

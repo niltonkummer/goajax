@@ -101,7 +101,7 @@ func TestCall(t *testing.T) {
 	
 		req, _ := http.ReadRequest(r)
 		b := bytes.NewBuffer([]byte{})
-		w := &TestResponseWriter{buffer: b}
+		w := &TestResponseWriter{buffer: b, header: make(http.Header)}
 		s.ServeHTTP(w, req)
 		resp := new(jsonResponse)
 		json.Unmarshal(b.Bytes(), resp)
@@ -177,6 +177,7 @@ func TestCall(t *testing.T) {
 
 type TestResponseWriter struct {
 	buffer *bytes.Buffer
+	header http.Header
 }
 
 func (t *TestResponseWriter) RemoteAddr() string {
@@ -185,8 +186,8 @@ func (t *TestResponseWriter) RemoteAddr() string {
 func (t *TestResponseWriter) UsingTLS() bool {
 	return false
 }
-func (t *TestResponseWriter) SetHeader(k, v string) {
-
+func (t *TestResponseWriter) Header() http.Header {
+	return t.header
 }
 func (t *TestResponseWriter) Write(p []byte) (int, os.Error) {
 	return t.buffer.Write(p)
